@@ -14,7 +14,7 @@ dotenv.config();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://meetting.netlify.app/"], // your frontend URL
+    origin: ["http://localhost:5173", "https://meetting.netlify.app"],
     credentials: true,
   })
 );
