@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { axiosInstance } from "../lib/axios";
-import { toast } from "react-toastify";
+
 import { LANGUAGE_TO_FLAG } from "../constants";
 
 const AuthContext = createContext();
@@ -14,16 +14,12 @@ export const AuthProvider = ({ children }) => {
   const getRecommendedUsers = async () => {
     try {
       const { data } = await axiosInstance.get("/users/recommended");
-      if (data.success) {
-        setRecommendedUser(data.users);
-      } else {
-        toast.error(data.message);
-      }
+
+      setRecommendedUser(data.users);
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getRecommendedUsers();
   }, []);
@@ -38,23 +34,6 @@ export const AuthProvider = ({ children }) => {
       setError(err.response?.data?.message || "Failed to fetch user");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getLanguageFlage = async (language) => {
-    if (!language) return null;
-
-    const langLower = language.toLowerCase();
-    const countryCode = LANGUAGE_TO_FLAG[langLower];
-
-    if (countryCode) {
-      return (
-        <img
-          src={`https://flagcdn.com/16x12/${countryCode}.png`}
-          alt={`${langLower} flag`}
-          className="h-3 mr-1 inline-block"
-        />
-      );
     }
   };
 
@@ -74,7 +53,6 @@ export const AuthProvider = ({ children }) => {
     recommendedUser,
     setRecommendedUser,
     getRecommendedUsers,
-    getLanguageFlage,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

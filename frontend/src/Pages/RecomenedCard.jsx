@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "react-toastify";
-
-import { MapPinIcon, UserPlusIcon } from "lucide-react";
-import { useAuth } from "../Context/AuthContext";
+import { CheckCircleIcon, MapPinIcon, UserPlusIcon } from "lucide-react";
 import { capitalize } from "../utils/utils";
+import { getLanguageFlage } from "../Component/FriendCard";
 
 const RecomenedCard = ({ recUser }) => {
   const [isPending, setIsPending] = useState(false);
   const [outGoingReqIds, setOutGoingReqIds] = useState(new Set());
   const [loadingFriends, setLoadingFriends] = useState(false);
   const [outgoingFriendReqs, setOutgoingFriendReqs] = useState([]);
-  const { getLanguageFlage } = useAuth();
 
   const hasRequestBeenSent = outGoingReqIds.has(recUser._id);
 
@@ -23,8 +21,9 @@ const RecomenedCard = ({ recUser }) => {
       );
       if (data.success) {
         // Update outgoing requests in state
+
         const newOutgoingReqs = new Set(outGoingReqIds);
-        newOutgoingReqs.add(userId);
+        setOutGoingReqIds((prev) => new Set(prev).add(userId));
         setOutGoingReqIds(newOutgoingReqs);
         toast.success(data.message);
         setIsPending(false);
@@ -37,6 +36,8 @@ const RecomenedCard = ({ recUser }) => {
       console.log(error);
       toast.error(error.message || "Failed to send friend request");
       setIsPending(false);
+    } finally {
+      getOutGoingFriendsReq();
     }
   };
 
@@ -46,37 +47,26 @@ const RecomenedCard = ({ recUser }) => {
       const { data } = await axiosInstance.get(
         "/users/outgoing-friend-requests"
       );
+
       if (data.success) {
-        toast.success(data.message);
-        const requestIdsSet = new Set(data.user);
+        const requestIdsSet = new Set(
+          data.user.map((req) => req.recipient._id)
+        );
+
         setOutGoingReqIds(requestIdsSet);
-        setLoadingFriends(false);
       } else {
         toast.error(data.message);
-        setLoadingFriends(false);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error("Failed to fetch outgoing friend requests.");
+    } finally {
       setLoadingFriends(false);
     }
   };
 
   useEffect(() => {
-    const outgoingIds = new Set();
-    if (outgoingFriendReqs && outgoingFriendReqs.length > 0) {
-      outgoingFriendReqs.forEach((req) => {
-        outgoingIds.add(req.recipient._id);
-      });
-      setOutGoingReqIds(outgoingIds);
-    }
-  }, [outgoingFriendReqs]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getOutGoingFriendsReq();
-    };
-    fetchData();
+    getOutGoingFriendsReq();
   }, []);
 
   return (

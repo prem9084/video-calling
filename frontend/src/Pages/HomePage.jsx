@@ -9,8 +9,6 @@ import NoFriendsFound from "../Component/NoFriendsFound";
 import { useAuth } from "../Context/AuthContext";
 import RecomenedCard from "./RecomenedCard";
 
-// Don't add 'use client' here - it's not needed for React Router based apps
-
 const HomePage = () => {
   const [loadingFriends] = useState(false);
   const [friends, setFriends] = useState([]);
@@ -22,7 +20,6 @@ const HomePage = () => {
       const { data } = await axiosInstance.get("/users/friends");
       if (data.success) {
         setFriends(data.user);
-        toast.success(data.message);
       } else {
         toast.error(data.message);
       }
@@ -48,7 +45,7 @@ const HomePage = () => {
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
             Your Friends
           </h2>
-          <Link to="/notifications" className="btn btn-outline btn-sm">
+          <Link to="/notification" className="btn btn-outline btn-sm">
             <UsersIcon className="mr-2 size-4" />
             Friend Requests
           </Link>
@@ -98,9 +95,9 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedUser.map((user) => {
-                return <RecomenedCard key={user._id} recUser={user} />;
-              })}
+              {recommendedUser.map((user) => (
+                <RecomenedCard key={user._id} recUser={user} />
+              ))}
             </div>
           )}
         </section>

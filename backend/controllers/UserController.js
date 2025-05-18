@@ -28,10 +28,10 @@ export const getMyFriends = async (req, res) => {
       .select("friends")
       .populate(
         "friends",
-        "fullname profilePic nativeLanguage,learningLanguage"
+        "fullname profilePic nativeLanguage learningLanguage"
       );
 
-    res.status(200).json(user.friends);
+    res.status(200).json({ success: true, user: user.friends });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -116,6 +116,8 @@ export const AcceptRequest = async (req, res) => {
     await UserModel.findByIdAndUpdate(friendRequest.recipient, {
       $addToSet: { friends: friendRequest.sender },
     });
+
+    res.status(200).json({ message: "Friend request accepted" });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -136,7 +138,7 @@ export const getFriendRequests = async (req, res) => {
 
     const accepetedReq = await FriendRequestModel.find({
       sender: req.user.id,
-      status: "accepted",
+      status: "Accepted",
     }).populate("recipient", "fullname profilePic");
 
     res.status(200).send({ success: true, incommingReq, accepetedReq });
@@ -156,7 +158,11 @@ export const getOutGoingFriendReq = async (req, res) => {
       "fullname profilePic nativeLanguage learningLanguage"
     );
 
-    res.status(200).send(outGoingReq);
+    res.status(200).json({
+      success: true,
+      message: "Outgoing friend requests fetched successfully",
+      user: outGoingReq,
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

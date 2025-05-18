@@ -12,7 +12,9 @@ import PageLoader from "./Component/PageLoader";
 import { useAuth } from "./Context/AuthContext";
 import LayOut from "./Component/Layout";
 import { useThemeStore } from "./store/useThemeStore";
+import { ToastContainer } from "react-toastify";
 
+import FriendPage from "./Pages/FriendPage";
 const App = () => {
   const { theme } = useThemeStore();
   const { isAuth, isOnboarded, loading } = useAuth();
@@ -51,12 +53,42 @@ const App = () => {
           }
         />
         <Route
-          path="/chat"
-          element={isAuth ? <ChatPage /> : <Navigate to="/login" />}
+          path="/chat/:id"
+          element={
+            isAuth && isOnboarded ? (
+              <LayOut showSidebar={true}>
+                <ChatPage />
+              </LayOut>
+            ) : (
+              <Navigate to={!isAuth ? "/login" : "/onbording"} />
+            )
+          }
         />
+
         <Route
-          path="/call"
-          element={isAuth ? <CallPage /> : <Navigate to="/login" />}
+          path="/friends"
+          element={
+            isAuth && isOnboarded ? (
+              <LayOut showSidebar={true}>
+                <FriendPage />
+              </LayOut>
+            ) : (
+              <Navigate to={!isAuth ? "/login" : "/onbording"} />
+            )
+          }
+        />
+
+        <Route
+          path="/call/:id"
+          element={
+            isAuth && isOnboarded ? (
+              <LayOut showSidebar={true}>
+                <CallPage />
+              </LayOut>
+            ) : (
+              <Navigate to={!isAuth ? "/login" : "/onbording"} />
+            )
+          }
         />
         <Route
           path="/signup"
@@ -68,6 +100,7 @@ const App = () => {
             )
           }
         />
+
         <Route
           path="/login"
           element={
@@ -80,9 +113,18 @@ const App = () => {
         />
         <Route
           path="/notification"
-          element={isAuth ? <NotificationsPage /> : <Navigate to="/login" />}
+          element={
+            isAuth && isOnboarded ? (
+              <LayOut showSidebar={true}>
+                <NotificationsPage />
+              </LayOut>
+            ) : (
+              <Navigate to={!isAuth ? "/login" : "/onbording"} />
+            )
+          }
         />
       </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

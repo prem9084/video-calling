@@ -14,7 +14,7 @@ const FriendRequestScheema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "accepted"],
+      enum: ["pending", "Accepted"],
       default: "pending",
     },
   },
