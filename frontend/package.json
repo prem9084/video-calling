@@ -23,6 +23,7 @@
     "stream-chat": "^9.1.1",
     "stream-chat-react": "^13.0.1",
     "tailwindcss": "^4.1.6",
+    "video-calling-app": "file:..",
     "zustand": "^5.0.4"
   },
   "devDependencies": {
