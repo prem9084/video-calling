@@ -62,7 +62,7 @@ export const userRegister = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
     });
 
     res.status(200).json({ success: true, newUser, message: "User Created" });
@@ -114,7 +114,7 @@ export const userLogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
     });
 
     res.status(200).json({ success: true, user, message: "User loggedIn" });
