@@ -7,6 +7,7 @@ import AuthRoute from "./routes/authRoute.js";
 import UserRoute from "./routes/UserRoute.js";
 import ChatRoute from "./routes/ChatRoute.js";
 import path from "path";
+import morgan from "morgan";
 
 const app = express();
 dotenv.config();
@@ -20,7 +21,7 @@ app.use(
     credentials: true, // allow frontend to send cookies
   })
 );
-
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
