@@ -39,7 +39,7 @@ const NotificationsPage = () => {
     setIsLoading(true);
     try {
       const { data } = await axiosInstance.put(
-        `/users/friend-request/${requestId}/accept`
+        `/users/friend-request/${requestId}`
       );
 
       await getFriendReqs();
