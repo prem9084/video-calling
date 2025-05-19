@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 // Routes
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://g-meeting.netlify.app"],
     credentials: true, // allow frontend to send cookies
   })
 );
