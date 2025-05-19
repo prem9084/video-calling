@@ -2,7 +2,6 @@ import express from "express";
 import {
   onboard,
   userLogin,
-  userLogout,
   userRegister,
 } from "../controllers/AuthController.js";
 import { protectRoute } from "../middleware/AuthMiddleare.js";
@@ -11,7 +10,7 @@ const router = express.Router();
 
 router.post("/register", userRegister);
 router.post("/login", userLogin);
-router.post("/logout", userLogout);
+// router.post("/logout", userLogout);
 
 router.post("/onboard", protectRoute, onboard);
 

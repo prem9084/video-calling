@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { axiosInstance } from "../lib/axios";
 
-import { LANGUAGE_TO_FLAG } from "../constants";
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -40,6 +38,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     fetchUser();
   }, []);
+
+  // Automatically include token from localStorage
+  axiosInstance.interceptors.request.use((config) => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
 
   const value = {
     user,

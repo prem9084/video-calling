@@ -1,27 +1,37 @@
 import jwt from "jsonwebtoken";
-import UserModel from "../Models/UserModel.js ";
+import UserModel from "../Models/UserModel.js";
 
 export const protectRoute = async (req, res, next) => {
   try {
-    const token = req.cookies.jwt;
-    if (!token) {
-      res.status(400).json({ success: false, message: "User not authorized" });
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ success: false, message: "No token provided" });
     }
+
+    const token = authHeader.split(" ")[1];
+
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT);
     if (!decoded) {
-      res.status(400).json({ success: false, message: "Invalid token" });
+      return res.status(401).json({ success: false, message: "Invalid token" });
     }
 
+    // Get user
     const user = await UserModel.findById(decoded.userId).select("-password");
-
     if (!user) {
-      res.status(400).json({ success: false, message: "User not authorized" });
+      return res
+        .status(401)
+        .json({ success: false, message: "User not found" });
     }
 
     req.user = user;
-
     next();
   } catch (error) {
-    console.log("protect route", error);
+    console.error("protectRoute error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

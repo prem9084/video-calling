@@ -58,14 +58,16 @@ export const userRegister = async (req, res) => {
       expiresIn: "7d",
     });
 
-    res.cookie("jwt", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
+    // res.cookie("jwt", token, {
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    //   httpOnly: true,
+    //   sameSite: "strict",
+    //   secure: process.env.NODE_ENV === "production",
+    // });
 
-    res.status(200).json({ success: true, newUser, message: "User Created" });
+    res
+      .status(200)
+      .json({ success: true, newUser, message: "User Created", token });
   } catch (error) {
     console.error("Server error during registration:", error);
     res.json({
@@ -110,23 +112,25 @@ export const userLogin = async (req, res) => {
       expiresIn: "7d",
     });
 
-    res.cookie("jwt", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
+    // res.cookie("jwt", token, {
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    //   httpOnly: true,
+    //   sameSite: "strict",
+    //   secure: process.env.NODE_ENV === "production",
+    // });
 
-    res.status(200).json({ success: true, user, message: "User loggedIn" });
+    res
+      .status(200)
+      .json({ success: true, user, message: "User loggedIn", token });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const userLogout = (req, res) => {
-  res.clearCookie("jwt");
-  res.status(200).json({ success: true, message: "User logout Successfully" });
-};
+// export const userLogout = (req, res) => {
+//   res.clearCookie("jwt");
+//   res.status(200).json({ success: true, message: "User logout Successfully" });
+// };
 
 export const onboard = async (req, res) => {
   try {

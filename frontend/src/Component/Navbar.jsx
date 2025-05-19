@@ -1,27 +1,18 @@
 import React from "react";
 import { useAuth } from "../Context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
-import { axiosInstance } from "../lib/axios";
 import { toast } from "react-toastify";
 import { BellIcon, LogOutIcon, ShipWheelIcon } from "lucide-react";
 import ThemeSelector from "./ThemeSelector";
 const Navbar = () => {
-  const { user, fetchUser } = useAuth();
+  const { user, setUser } = useAuth();
   const location = useLocation();
   const isChatPage = location.pathname?.startsWith("/chat");
 
   const logout = async () => {
-    try {
-      const { data } = await axiosInstance.post("/auth/logout");
-      if (data.success) {
-        toast.success(data.message);
-        await fetchUser();
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    localStorage.removeItem("jwt");
+    setUser(null);
+    toast.success("User logout Successfully");
   };
 
   return (

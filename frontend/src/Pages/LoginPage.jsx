@@ -9,7 +9,7 @@ import { useAuth } from "../Context/AuthContext";
 const LoginPage = () => {
   // const { user } = useUserData();
   const [isPending, setIsPending] = useState(false);
-  const { fetchUser } = useAuth();
+  const { fetchUser, setUser } = useAuth();
   const [error, setError] = useState(null);
   const [loginData, setLoginData] = useState({
     email: "",
@@ -24,6 +24,9 @@ const LoginPage = () => {
       if (data.success) {
         toast.success(data.message);
         await fetchUser();
+
+        localStorage.setItem("jwt", data.token);
+        setUser(data.user);
         setIsPending(false);
       } else {
         setError(data.message);

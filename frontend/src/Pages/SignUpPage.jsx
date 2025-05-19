@@ -22,6 +22,8 @@ const SignUpPage = () => {
       const { data } = await axiosInstance.post("/auth/register", signupData);
       if (data && data?.success) {
         toast.success(data && data.message);
+        localStorage.setItem("jwt", data.token);
+
         setIsPending(false);
         await fetchUser();
       } else {
