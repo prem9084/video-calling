@@ -29,13 +29,7 @@ app.use("/api/auth", AuthRoute);
 app.use("/api/users", UserRoute);
 app.use("/api/chat", ChatRoute);
 
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(_dirname, "../frontend/dist")));
 
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(_dirname, "../frontend", "dist", "index.html"));
-//   });
-// }
 
 app.listen(PORT, () => {
   console.log(`Server listingng on port ${PORT}`);
