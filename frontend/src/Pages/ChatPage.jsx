@@ -81,10 +81,9 @@ const ChatPage = () => {
   const handleVideoCall = () => {
     if (channel) {
       const baseUrl =
-        production === "development"
+        production === "production"
           ? "https://g-meeting.netlify.app"
           : window.location.origin;
-
       const callUrl = `${baseUrl}/call/${channel.id}`;
       channel.sendMessage({
         text: `i have started a video call. join me: ${callUrl}`,
