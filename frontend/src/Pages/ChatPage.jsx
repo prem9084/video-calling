@@ -81,9 +81,9 @@ const ChatPage = () => {
   const handleVideoCall = () => {
     if (channel) {
       const baseUrl =
-        !production === "development"
-          ? "http://localhost:5173"
-          : "https://g-meeting.netlify.app";
+        production === "development"
+          ? "https://g-meeting.netlify.app"
+          : window.location.origin;
 
       const callUrl = `${baseUrl}/call/${channel.id}`;
       channel.sendMessage({
