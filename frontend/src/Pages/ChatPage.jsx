@@ -16,6 +16,7 @@ import {
 } from "stream-chat-react";
 import CallButton from "../Component/CallButton";
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
+const production = import.meta.env.MODE;
 
 const ChatPage = () => {
   const { id } = useParams();
@@ -79,7 +80,12 @@ const ChatPage = () => {
 
   const handleVideoCall = () => {
     if (channel) {
-      const callUrl = `${window.location.origin}/call/${channel.id}`;
+      const baseUrl =
+        !production === "development"
+          ? "http://localhost:5173"
+          : "https://g-meeting.netlify.app";
+
+      const callUrl = `${baseUrl}/call/${channel.id}`;
       channel.sendMessage({
         text: `i have started a video call. join me: ${callUrl}`,
       });
