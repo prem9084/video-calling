@@ -6,7 +6,7 @@ import axios from "axios";
 //     : "/api";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://video-calling-6grd.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
